@@ -104,10 +104,22 @@ if menu == "Login":
 
             stored_password = data[0]
 
-            if verify_password(
-                password,
-                stored_password
-            ):
+            try:
+                verified = verify_password(
+                    password,
+                    stored_password
+                )
+            except Exception as exc:
+                print(
+                    "Login verify_password exception:",
+                    repr(exc),
+                    type(stored_password),
+                    repr(stored_password)[:120]
+                )
+                st.error("Unexpected login error. Check app logs.")
+                verified = False
+
+            if verified:
 
                 token = create_token(
                     username
